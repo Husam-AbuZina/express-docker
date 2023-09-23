@@ -33,7 +33,7 @@ jobs:
       - name: Publish Docker image
         run: docker push ghcr.io/husam-abuzina/express-docker:${{ steps.image_version.outputs.gitsha }}
      - name: confiure docker host
-       uses: husam-abuzina/configure-docker-host@v1
+       uses: khaledez/configure-docker-host@v1
       with:
         host: 18.170.38.203
         user: github
