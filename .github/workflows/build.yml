@@ -2,16 +2,16 @@ name: Docker Image CI
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
   pull_request:
-    branches: ["main"]
+    branches:
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
+
     steps:
       - name: Checkout the repository
         uses: actions/checkout@v3
@@ -32,17 +32,19 @@ jobs:
 
       - name: Publish Docker image
         run: docker push ghcr.io/husam-abuzina/express-docker:${{ steps.image_version.outputs.gitsha }}
-     -  name: confiure docker host
+
+      - name: Configure Docker host
         uses: khaledez/configure-docker-host@v1
         with:
           host: 18.170.38.203
           user: github
           ssh-private-key: ${{ secrets.DEPLOYMENT_KEY }}
-    - name: deploy
-      run: docker compose -f docker-compose-prod.yml up -d
-      env:
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-      name: print logs
-      if: always()
-       run: docker compose logs 
 
+      - name: Deploy
+        run: docker-compose -f docker-compose-prod.yml up -d
+        env:
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+
+      - name: Print logs
+        if: always()
+        run: docker-compose logs
