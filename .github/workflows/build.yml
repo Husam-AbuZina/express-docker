@@ -24,5 +24,5 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Build the Docker image
         run:
-          docker build . --file Dockerfile --tag ghcr.io/husam-abuzina/express-app:$(date +%s)
+          docker build . --file Dockerfile --tag ghcr.io/husam-abuzina/express-app:$(date +%s | tr '[:upper:]' '[:lower:]')
           #should to be tag name same name of repo
